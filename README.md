@@ -1,4 +1,4 @@
-Using the data from Google places https://developers.google.com/places/web-service/search create a simple app to save places based on city and have the CRUD operations on them.
+Using the data from Google places https://developers.google.com/places/web-service/search create a simple app to save places based on the city and have the CRUD operations on them.
 
 Implementation:
 
