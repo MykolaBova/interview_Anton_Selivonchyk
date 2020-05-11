@@ -18,13 +18,14 @@ Web:
 Technologies to use:
 
 Client:
-Objective-C
-realm.io
+- Objective-C
+- realm.io
+
 Server:
-PostgreSQL
-Django or Flask
-SQlAlchemy
-REST implementation
+- PostgreSQL
+- Django or Flask
+- SQlAlchemy
+- REST implementation
 
 
 Web side is Optional.
