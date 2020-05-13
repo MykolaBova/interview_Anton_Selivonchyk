@@ -26,8 +26,8 @@
     PFPlace* place = [[PFPlace alloc] init];
     place.placeID = result[@"place_id"];
     place.name = result[@"name"];
-    place.latitude = @([result[@"geometry.location.lat"] doubleValue]);
-    place.longitude = @([result[@"geometry.location.lng"] doubleValue]);
+    place.latitude = result[@"geometry"][@"location"][@"lat"];
+    place.longitude = result[@"geometry"][@"location"][@"lng"];
 
     for (NSString* type in result[@"types"]) {
         [place.types addObject:type];
@@ -58,6 +58,16 @@
         return [obj1 length] > [obj2 length];
     }];
     return [sortedTypes subarrayWithRange:NSMakeRange(0, 4)];
+}
+
+- (void)detailsFromDictionary:(NSDictionary*)result {
+    [self.realm beginWriteTransaction];
+
+    self.address = result[@"adr_address"];
+    self.phoneNumber = result[@"formatted_phone_number"];
+    self.rating = [NSString stringWithFormat:@"%@", result[@"rating"]];
+
+    [self.realm commitWriteTransaction];
 }
 
 - (NSString*)typesString {

@@ -42,7 +42,7 @@
 
 - (void)configureRealm {
     RLMRealmConfiguration* config = [RLMRealmConfiguration defaultConfiguration];
-    config.schemaVersion = 2;
+    config.schemaVersion = 3;
     config.shouldCompactOnLaunch = ^BOOL(NSUInteger totalBytes, NSUInteger usedBytes) {
         NSUInteger oneHundredMB = 100 * 1024 * 1024;
         return (totalBytes > oneHundredMB) && ((double)usedBytes / totalBytes) < 0.5;

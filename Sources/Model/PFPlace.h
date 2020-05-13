@@ -19,10 +19,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSString* name;
 @property RLMArray<RLMString>* types;
 @property BOOL wasEdited;
+@property NSString* address;
+@property NSString* phoneNumber;
+@property NSString* rating;
 
 + (void)loadFromDictionary:(NSDictionary*)result;
 + (NSArray<NSString*>*)filters;
 
+- (void)detailsFromDictionary:(NSDictionary*)result;
 - (NSString*)typesString;
 - (NSString*)locationString;
 
