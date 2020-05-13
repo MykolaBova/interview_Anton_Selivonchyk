@@ -21,7 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property BOOL wasEdited;
 
 + (void)loadFromDictionary:(NSDictionary*)result;
-+ (NSArray<NSString*>*)distinctTypes;
++ (NSArray<NSString*>*)filters;
+
+- (NSString*)typesString;
+- (NSString*)locationString;
 
 @end
 RLM_ARRAY_TYPE(PFPlace)

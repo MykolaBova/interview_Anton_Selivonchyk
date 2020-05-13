@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PFDetailsController : UIViewController
 
+@property (copy, nonatomic) NSString* placeID;
+
 @end
 
 NS_ASSUME_NONNULL_END
