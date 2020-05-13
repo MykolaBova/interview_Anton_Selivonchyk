@@ -137,6 +137,18 @@
                         <viewLayoutGuide key="safeArea" id="c4G-aq-gVx"/>
                     </view>
                     <navigationItem key="navigationItem" id="jYH-GO-p00">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="jRL-75-WYG">
+                            <rect key="frame" x="141.5" y="6" width="131" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="First"/>
+                                <segment title="Second"/>
+                            </segments>
+                            <connections>
+                                <action selector="applyFilterAction:" destination="Nxz-4W-cL4" eventType="valueChanged" id="fOT-IE-IZ8"/>
+                            </connections>
+                        </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" title="Search" id="q6i-9E-XAv">
                             <connections>
                                 <segue destination="fWF-Rc-4Vx" kind="presentation" id="oSE-Hx-gJ9"/>
@@ -144,6 +156,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="filterSegmentedControl" destination="jRL-75-WYG" id="AOj-6S-U1l"/>
                         <outlet property="tableView" destination="2MX-1A-iRR" id="cSb-SM-5Ml"/>
                     </connections>
                 </viewController>

@@ -29,6 +29,10 @@
     place.latitude = @([result[@"geometry.location.lat"] doubleValue]);
     place.longitude = @([result[@"geometry.location.lng"] doubleValue]);
 
+    for (NSString* type in result[@"types"]) {
+        [place.types addObject:type];
+    }
+
     NSArray<NSDictionary*>* photos = result[@"photos"];
     if ([photos firstObject] != nil) {
         place.photoReference = [photos firstObject][@"photo_reference"];
@@ -36,6 +40,20 @@
 
     [realm addOrUpdateObject:place];
     [realm commitWriteTransaction];
+}
+
++ (NSArray<NSString*>*)distinctTypes {
+    NSMutableArray* distinctTypes  = [[NSMutableArray alloc] init];
+    RLMResults* places = [PFPlace allObjects];
+    for (PFPlace* place in places) {
+        for (NSString* type in place.types) {
+            if ([distinctTypes containsObject:type] == NO) {
+                [distinctTypes addObject:type];
+            }
+        }
+    }
+
+    return distinctTypes;
 }
 
 @end
