@@ -18,6 +18,7 @@
 		3AA5FEC5246A0EA500575E04 /* PFSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5FEC4246A0EA500575E04 /* PFSearchController.m */; };
 		3AA5FEC8246A0EBA00575E04 /* PFDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5FEC7246A0EBA00575E04 /* PFDetailsController.m */; };
 		3AA5FECC246A125800575E04 /* PFNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5FECB246A125800575E04 /* PFNavigationController.m */; };
+		3AD98FC9246B1E460091A955 /* PFPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD98FC8246B1E460091A955 /* PFPlace.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,8 @@
 		3AA5FEC7246A0EBA00575E04 /* PFDetailsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PFDetailsController.m; sourceTree = "<group>"; };
 		3AA5FECA246A125800575E04 /* PFNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PFNavigationController.h; sourceTree = "<group>"; };
 		3AA5FECB246A125800575E04 /* PFNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PFNavigationController.m; sourceTree = "<group>"; };
+		3AD98FC7246B1E460091A955 /* PFPlace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PFPlace.h; sourceTree = "<group>"; };
+		3AD98FC8246B1E460091A955 /* PFPlace.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PFPlace.m; sourceTree = "<group>"; };
 		985826FDD4E1BD0E3D91A028 /* Pods-PlaceFinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlaceFinder.debug.xcconfig"; path = "Target Support Files/Pods-PlaceFinder/Pods-PlaceFinder.debug.xcconfig"; sourceTree = "<group>"; };
 		DEA3E72EBC34B6DEFD4595CD /* Pods-PlaceFinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlaceFinder.release.xcconfig"; path = "Target Support Files/Pods-PlaceFinder/Pods-PlaceFinder.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -89,6 +92,7 @@
 		3A0C1E8F2469E0A0005626B3 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				3AD98FC6246B1E260091A955 /* Model */,
 				3A0C1E902469E0A0005626B3 /* ViewControllers */,
 				3A0C1E932469E0A0005626B3 /* Application */,
 			);
@@ -114,12 +118,21 @@
 			isa = PBXGroup;
 			children = (
 				3A0C1E942469E0A0005626B3 /* AppDelegate.h */,
-				3A0C1E952469E0A0005626B3 /* SceneDelegate.m */,
-				3A0C1E962469E0A0005626B3 /* main.m */,
 				3A0C1E972469E0A0005626B3 /* AppDelegate.m */,
 				3A0C1E982469E0A0005626B3 /* SceneDelegate.h */,
+				3A0C1E952469E0A0005626B3 /* SceneDelegate.m */,
+				3A0C1E962469E0A0005626B3 /* main.m */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		3AD98FC6246B1E260091A955 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3AD98FC7246B1E460091A955 /* PFPlace.h */,
+				3AD98FC8246B1E460091A955 /* PFPlace.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		54D790E0DE322A6C68FFBE65 /* Frameworks */ = {
@@ -260,6 +273,7 @@
 				3A0C1E9F2469E0A0005626B3 /* main.m in Sources */,
 				3A0C1E9E2469E0A0005626B3 /* SceneDelegate.m in Sources */,
 				3AA5FEC8246A0EBA00575E04 /* PFDetailsController.m in Sources */,
+				3AD98FC9246B1E460091A955 /* PFPlace.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <Realm/Realm.h>
 
 @interface AppDelegate ()
 
@@ -16,7 +17,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    [self configureRealm];
     return YES;
 }
 
@@ -37,5 +38,24 @@
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 }
 
+#pragma mark - Private interface
+
+- (void)configureRealm {
+    RLMRealmConfiguration* config = [RLMRealmConfiguration defaultConfiguration];
+//    config.schemaVersion = 1;
+    config.shouldCompactOnLaunch = ^BOOL(NSUInteger totalBytes, NSUInteger usedBytes) {
+        NSUInteger oneHundredMB = 100 * 1024 * 1024;
+        return (totalBytes > oneHundredMB) && ((double)usedBytes / totalBytes) < 0.5;
+    };
+//    config.migrationBlock = ^(RLMMigration *migration, uint64_t oldSchemaVersion) {
+//    };
+
+    NSError* error = nil;
+    RLMRealm* realm = [RLMRealm realmWithConfiguration:config error:&error];
+    if (error != nil) {
+        NSLog(@">> Error: %@", [error localizedDescription]);
+    }
+    NSLog(@" >> realm: %@", realm.description);
+}
 
 @end
