@@ -7,13 +7,8 @@
 //
 
 #import "PFSearchController.h"
-#import <CoreLocation/CoreLocation.h>
+#import "PFNetworking.h"
 #import "PFPlace.h"
-
-//NSString* const apiKey = @"AIzaSyCCOAaGJlvgPhCRB1-ppj9vW2kq9hwQKNg";
-NSString* const apiKey = @"AIzaSyBPsziH_ZUzf6dty3UGMGXE2_hli___MIA";
-NSString* const cityURLFormat = @"https://maps.googleapis.com/maps/api/place/textsearch/json?query=%@&key=%@";
-NSString* const locationURLFormat = @"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%.7f,%.7f&radius=5000&key=%@";
 
 @interface PFSearchController () <CLLocationManagerDelegate>
 
@@ -32,7 +27,6 @@ NSString* const locationURLFormat = @"https://maps.googleapis.com/maps/api/place
     }
 
     _searchCoordinate = searchCoordinate;
-    NSLog(@"setSearchCoordinate(lat: %@ lon: %@)", @(searchCoordinate.latitude), @(searchCoordinate.longitude));
 
     [self loadPlaces];
 }
@@ -69,91 +63,31 @@ NSString* const locationURLFormat = @"https://maps.googleapis.com/maps/api/place
 #pragma mark - Private interface
 
 - (void)loadCity {
-    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] init];
-    NSString* cityName = self.cityTextField.text;
-
-    if (cityName == nil || [cityName isEqualToString:@""]) {
-        [self displayErrorString:@"Empty city name"];
-        return;
-    }
-
-    NSString* cityURLString = [NSString stringWithFormat:cityURLFormat, cityName, apiKey];
-
-    [request setURL:[NSURL URLWithString:cityURLString]];
-    [request setHTTPMethod:@"GET"];
-    [request addValue:@"text/plain" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:@"text/plain" forHTTPHeaderField:@"Accept"];
-
-    NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     __weak typeof(self) weakSelf = self;
-    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSString* requestReply = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-        NSData* responseData = [requestReply dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary* jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
-
-        NSLog(@"requestReply: %@ error: %@", jsonDict, error.localizedDescription);
-        if (error != nil) {
-            [weakSelf displayErrorString:error.localizedDescription];
+    [PFNetworking requestCityCoordinates:self.cityTextField.text completion:^(CLLocationCoordinate2D coordinate, NSString * _Nullable errorString) {
+        if (errorString != nil) {
+            [weakSelf displayErrorString:errorString];
         } else {
-            NSString* status = [jsonDict objectForKey:@"status"];
-            if ([status isEqualToString:@"OK"]) {
-                NSString* latitudeString = [[jsonDict valueForKeyPath:@"results.geometry.location.lat"] firstObject];
-                NSString* longitudeString = [[jsonDict valueForKeyPath:@"results.geometry.location.lng"] firstObject];
-
-                weakSelf.searchCoordinate = CLLocationCoordinate2DMake(latitudeString.doubleValue, longitudeString.doubleValue);
-
-            } else {
-                NSString* errorMessage = [jsonDict objectForKey:@"error_message"];
-                if (errorMessage == nil) {
-                    errorMessage = [NSString stringWithFormat:@"Can't find city \"%@\"", cityName];
-                }
-
-                [weakSelf displayErrorString:errorMessage];
-            }
+            weakSelf.searchCoordinate = coordinate;
         }
-
-    }] resume];
+    }];
 }
 
 - (void)loadPlaces {
-    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] init];
-    NSString* locationURLString = [NSString stringWithFormat:locationURLFormat, self.searchCoordinate.latitude, self.searchCoordinate.longitude, apiKey];
-
-    [request setURL:[NSURL URLWithString:locationURLString]];
-    [request setHTTPMethod:@"GET"];
-    [request addValue:@"text/plain" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:@"text/plain" forHTTPHeaderField:@"Accept"];
-
-    NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     __weak typeof(self) weakSelf = self;
-    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSString* requestReply = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-        NSData* responseData = [requestReply dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary* jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
-
-        NSLog(@"requestReply: %@ error: %@", jsonDict, error.localizedDescription);
-        if (error != nil) {
-            [weakSelf displayErrorString:error.localizedDescription];
+    [PFNetworking requestPlacesFor:self.searchCoordinate completion:^(NSArray<NSDictionary *> * _Nullable results, NSString * _Nullable errorString) {
+        if (errorString != nil) {
+            [weakSelf displayErrorString:errorString];
         } else {
-            NSString* status = [jsonDict objectForKey:@"status"];
-            if ([status isEqualToString:@"OK"]) {
-
-
-                NSArray<NSDictionary*>* results = [jsonDict objectForKey:@"results"];
+            dispatch_async(dispatch_get_main_queue(), ^{
                 for (NSDictionary* result in results) {
-                    NSLog(@"result: %@", result);
-
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [PFPlace loadFromDictionary:result];
-                    });
+                    [PFPlace loadFromDictionary:result];
                 }
 
-            } else {
-                [weakSelf displayErrorString:[jsonDict objectForKey:@"error_message"]];
-            }
+                [weakSelf dismissViewControllerAnimated:YES completion:nil];
+            });
         }
-
-    }] resume];
+    }];
 }
 
 - (void)displayErrorString:(NSString*)errorString {

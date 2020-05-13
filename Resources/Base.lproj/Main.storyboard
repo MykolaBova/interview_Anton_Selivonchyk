@@ -136,7 +136,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="c4G-aq-gVx"/>
                     </view>
-                    <navigationItem key="navigationItem" id="jYH-GO-p00"/>
+                    <navigationItem key="navigationItem" id="jYH-GO-p00">
+                        <barButtonItem key="rightBarButtonItem" title="Search" id="q6i-9E-XAv">
+                            <connections>
+                                <segue destination="fWF-Rc-4Vx" kind="presentation" id="oSE-Hx-gJ9"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="2MX-1A-iRR" id="cSb-SM-5Ml"/>
                     </connections>
