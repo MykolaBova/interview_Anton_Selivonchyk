@@ -42,20 +42,15 @@
 
 - (void)configureRealm {
     RLMRealmConfiguration* config = [RLMRealmConfiguration defaultConfiguration];
-//    config.schemaVersion = 1;
+    config.schemaVersion = 2;
     config.shouldCompactOnLaunch = ^BOOL(NSUInteger totalBytes, NSUInteger usedBytes) {
         NSUInteger oneHundredMB = 100 * 1024 * 1024;
         return (totalBytes > oneHundredMB) && ((double)usedBytes / totalBytes) < 0.5;
     };
-//    config.migrationBlock = ^(RLMMigration *migration, uint64_t oldSchemaVersion) {
-//    };
+    config.migrationBlock = ^(RLMMigration *migration, uint64_t oldSchemaVersion) {
+    };
 
-    NSError* error = nil;
-    RLMRealm* realm = [RLMRealm realmWithConfiguration:config error:&error];
-    if (error != nil) {
-        NSLog(@">> Error: %@", [error localizedDescription]);
-    }
-    NSLog(@" >> realm: %@", realm.description);
+    [RLMRealmConfiguration setDefaultConfiguration:config];
 }
 
 @end

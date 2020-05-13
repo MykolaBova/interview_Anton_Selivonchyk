@@ -17,9 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSNumber<RLMDouble>* latitude;
 @property NSNumber<RLMDouble>* longitude;
 @property NSString* name;
+@property RLMArray<RLMString>* types;
 @property BOOL wasEdited;
 
 + (void)loadFromDictionary:(NSDictionary*)result;
++ (NSArray<NSString*>*)distinctTypes;
 
 @end
 RLM_ARRAY_TYPE(PFPlace)
