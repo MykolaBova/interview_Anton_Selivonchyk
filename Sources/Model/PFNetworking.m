@@ -7,11 +7,12 @@
 //
 
 #import "PFNetworking.h"
+#import <UIKit/UIKit.h>
 
-//NSString* const apiKey = @"AIzaSyCCOAaGJlvgPhCRB1-ppj9vW2kq9hwQKNg";
-NSString* const apiKey = @"AIzaSyBPsziH_ZUzf6dty3UGMGXE2_hli___MIA";
+NSString* const apiKey = @"AIzaSyBPsziH_ZUzf6dty3UGMGXE2_hli___MIA"; //@"AIzaSyCCOAaGJlvgPhCRB1-ppj9vW2kq9hwQKNg"
 NSString* const cityURLFormat = @"https://maps.googleapis.com/maps/api/place/textsearch/json?query=%@&key=%@";
 NSString* const locationURLFormat = @"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%.7f,%.7f&radius=5000&key=%@";
+NSString* const imageURLFormat = @"https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=%@&key=%@";
 
 @implementation PFNetworking
 
@@ -87,5 +88,21 @@ NSString* const locationURLFormat = @"https://maps.googleapis.com/maps/api/place
 
     }] resume];
 }
+
++ (void)requestImageWith:(NSString*)imageReference completion:(void (^)(UIImage* _Nullable image))completion {
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSString* imageURLString = [NSString stringWithFormat:imageURLFormat, imageReference, apiKey];
+        NSData* data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:imageURLString]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (data == nil) {
+                completion(nil);
+            } else {
+                completion([UIImage imageWithData:data]);
+            }
+        });
+    });
+}
+
+
 
 @end

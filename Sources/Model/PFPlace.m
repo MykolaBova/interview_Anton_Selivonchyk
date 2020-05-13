@@ -42,7 +42,7 @@
     [realm commitWriteTransaction];
 }
 
-+ (NSArray<NSString*>*)distinctTypes {
++ (NSArray<NSString*>*)filters {
     NSMutableArray* distinctTypes  = [[NSMutableArray alloc] init];
     RLMResults* places = [PFPlace allObjects];
     for (PFPlace* place in places) {
@@ -53,7 +53,23 @@
         }
     }
 
-    return distinctTypes;
+    // There are plenty of types, for display purpose selecting 3 shortest
+    NSArray<NSString*>* sortedTypes = [distinctTypes sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        return [obj1 length] > [obj2 length];
+    }];
+    return [sortedTypes subarrayWithRange:NSMakeRange(0, 4)];
+}
+
+- (NSString*)typesString {
+    NSMutableArray<NSString*>* types = [NSMutableArray array];
+    for (NSString* type in self.types) {
+        [types addObject:type];
+    }
+    return [types componentsJoinedByString:@", "];
+}
+
+- (NSString*)locationString {
+    return [NSString stringWithFormat:@"%.7f,%.7f", self.latitude.doubleValue, self.longitude.doubleValue];
 }
 
 @end

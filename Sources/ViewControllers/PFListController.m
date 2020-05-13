@@ -9,8 +9,10 @@
 #import "PFListController.h"
 #import <UIKit/UIKit.h>
 #import "PFPlace.h"
+#import "PFDetailsController.h"
 
 NSString* const kListCellIdentifier = @"listCellIdentifier";
+NSString* const kShowDetailSegueIdentifier = @"kShowDetailSegueIdentifier";
 
 @interface PFListController () <UITableViewDataSource>
 
@@ -20,7 +22,6 @@ NSString* const kListCellIdentifier = @"listCellIdentifier";
 @property (strong, nonatomic) NSArray<PFPlace*>* places;
 @property (strong, nonatomic) RLMNotificationToken* notificationToken;
 @property (strong, nonatomic) NSArray<NSString*>* filters;
-@property (strong, nonatomic) NSPredicate* predicate;
 
 @end
 
@@ -29,12 +30,7 @@ NSString* const kListCellIdentifier = @"listCellIdentifier";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    // There are plenty of types, for display purpose selecting 3 shortest
-    NSArray<NSString*>* sortedTypes = [[PFPlace distinctTypes] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-        return [obj1 length] > [obj2 length];
-    }];
-    self.filters = [sortedTypes subarrayWithRange:NSMakeRange(0, 4)];
-
+    self.filters = [PFPlace filters];
     [self reloadData];
 
     RLMRealm* realm = [RLMRealm defaultRealm];
@@ -55,6 +51,17 @@ NSString* const kListCellIdentifier = @"listCellIdentifier";
     _filterSegmentedControl.selectedSegmentIndex = 0;
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:kShowDetailSegueIdentifier]) {
+
+        PFDetailsController* detailsController = (PFDetailsController*)[segue destinationViewController];
+        UITableViewCell* selectedCell = (UITableViewCell*)sender;
+        NSIndexPath* indexPath = [self.tableView indexPathForCell:selectedCell];
+
+        detailsController.placeID = self.places[indexPath.row].placeID;
+    }
+}
+
 #pragma mark - UITableViewDelegate interface
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
@@ -72,12 +79,6 @@ NSString* const kListCellIdentifier = @"listCellIdentifier";
 #pragma mark - IBActions
 
 - (IBAction)applyFilterAction:(UISegmentedControl*)sender {
-    if (sender.selectedSegmentIndex == 0) {
-        self.predicate = nil;
-    } else {
-        self.predicate = [NSPredicate predicateWithFormat:@"ANY types CONTAINS %@", self.filters[sender.selectedSegmentIndex]];
-    }
-
     [self reloadData];
 }
 

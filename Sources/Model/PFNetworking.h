@@ -11,10 +11,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class UIImage;
+
 @interface PFNetworking : NSObject
 
 + (void)requestCityCoordinates:(NSString*)city completion:(void (^)(CLLocationCoordinate2D coordinate, NSString* _Nullable errorString))completion;
 + (void)requestPlacesFor:(CLLocationCoordinate2D)coordinate completion:(void (^)(NSArray<NSDictionary*>* _Nullable results, NSString* _Nullable errorString))completion;
++ (void)requestImageWith:(NSString*)imageReference completion:(void (^)(UIImage* _Nullable image))completion;
 
 @end
 
