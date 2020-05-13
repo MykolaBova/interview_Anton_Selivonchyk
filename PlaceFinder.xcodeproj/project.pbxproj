@@ -14,6 +14,7 @@
 		3A0C1E9E2469E0A0005626B3 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0C1E952469E0A0005626B3 /* SceneDelegate.m */; };
 		3A0C1E9F2469E0A0005626B3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0C1E962469E0A0005626B3 /* main.m */; };
 		3A0C1EA02469E0A0005626B3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0C1E972469E0A0005626B3 /* AppDelegate.m */; };
+		3A83FB27246C517800512D5F /* PFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A83FB26246C517800512D5F /* PFNetworking.m */; };
 		3AA5FEC2246A0E8C00575E04 /* PFListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5FEC1246A0E8C00575E04 /* PFListController.m */; };
 		3AA5FEC5246A0EA500575E04 /* PFSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5FEC4246A0EA500575E04 /* PFSearchController.m */; };
 		3AA5FEC8246A0EBA00575E04 /* PFDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5FEC7246A0EBA00575E04 /* PFDetailsController.m */; };
@@ -33,6 +34,8 @@
 		3A0C1E962469E0A0005626B3 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3A0C1E972469E0A0005626B3 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		3A0C1E982469E0A0005626B3 /* SceneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		3A83FB25246C517800512D5F /* PFNetworking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PFNetworking.h; sourceTree = "<group>"; };
+		3A83FB26246C517800512D5F /* PFNetworking.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PFNetworking.m; sourceTree = "<group>"; };
 		3AA5FEC0246A0E8C00575E04 /* PFListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PFListController.h; sourceTree = "<group>"; };
 		3AA5FEC1246A0E8C00575E04 /* PFListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PFListController.m; sourceTree = "<group>"; };
 		3AA5FEC3246A0EA500575E04 /* PFSearchController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PFSearchController.h; sourceTree = "<group>"; };
@@ -131,6 +134,8 @@
 			children = (
 				3AD98FC7246B1E460091A955 /* PFPlace.h */,
 				3AD98FC8246B1E460091A955 /* PFPlace.m */,
+				3A83FB25246C517800512D5F /* PFNetworking.h */,
+				3A83FB26246C517800512D5F /* PFNetworking.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -273,6 +278,7 @@
 				3A0C1E9F2469E0A0005626B3 /* main.m in Sources */,
 				3A0C1E9E2469E0A0005626B3 /* SceneDelegate.m in Sources */,
 				3AA5FEC8246A0EBA00575E04 /* PFDetailsController.m in Sources */,
+				3A83FB27246C517800512D5F /* PFNetworking.m in Sources */,
 				3AD98FC9246B1E460091A955 /* PFPlace.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
