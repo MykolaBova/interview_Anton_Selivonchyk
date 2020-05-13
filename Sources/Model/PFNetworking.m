@@ -13,11 +13,21 @@ NSString* const apiKey = @"AIzaSyBPsziH_ZUzf6dty3UGMGXE2_hli___MIA"; //@"AIzaSyC
 NSString* const cityURLFormat = @"https://maps.googleapis.com/maps/api/place/textsearch/json?query=%@&key=%@";
 NSString* const locationURLFormat = @"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%.7f,%.7f&radius=5000&key=%@";
 NSString* const imageURLFormat = @"https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=%@&key=%@";
+NSString* const detailsURLFormat = @"https://maps.googleapis.com/maps/api/place/details/json?place_id=%@&fields=rating,formatted_phone_number,adr_address&key=%@";
 
 @implementation PFNetworking
 
-+ (void)requestCityCoordinates:(NSString*)city completion:(void (^)(CLLocationCoordinate2D coordinate, NSString* _Nullable errorString))completion {
++ (NSMutableURLRequest*)apiRequestWith:(NSString*)urlString {
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] init];
+
+    [request setURL:[NSURL URLWithString:urlString]];
+    [request setHTTPMethod:@"GET"];
+    [request addValue:@"text/plain" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"text/plain" forHTTPHeaderField:@"Accept"];
+    return request;
+}
+
++ (void)requestCityCoordinates:(NSString*)city completion:(void (^)(CLLocationCoordinate2D coordinate, NSString* _Nullable errorString))completion {
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(0, 0);
 
     if (city == nil || [city isEqualToString:@""]) {
@@ -25,12 +35,7 @@ NSString* const imageURLFormat = @"https://maps.googleapis.com/maps/api/place/ph
         return;
     }
 
-    NSString* cityURLString = [NSString stringWithFormat:cityURLFormat, city, apiKey];
-
-    [request setURL:[NSURL URLWithString:cityURLString]];
-    [request setHTTPMethod:@"GET"];
-    [request addValue:@"text/plain" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:@"text/plain" forHTTPHeaderField:@"Accept"];
+    NSMutableURLRequest* request = [self apiRequestWith:[NSString stringWithFormat:cityURLFormat, city, apiKey]];
 
     NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -61,13 +66,7 @@ NSString* const imageURLFormat = @"https://maps.googleapis.com/maps/api/place/ph
 }
 
 + (void)requestPlacesFor:(CLLocationCoordinate2D)coordinate completion:(void (^)(NSArray<NSDictionary*>* _Nullable results, NSString* _Nullable errorString))completion {
-    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] init];
-    NSString* locationURLString = [NSString stringWithFormat:locationURLFormat, coordinate.latitude, coordinate.longitude, apiKey];
-
-    [request setURL:[NSURL URLWithString:locationURLString]];
-    [request setHTTPMethod:@"GET"];
-    [request addValue:@"text/plain" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:@"text/plain" forHTTPHeaderField:@"Accept"];
+    NSMutableURLRequest* request = [self apiRequestWith:[NSString stringWithFormat:locationURLFormat, coordinate.latitude, coordinate.longitude, apiKey]];
 
     NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -103,6 +102,29 @@ NSString* const imageURLFormat = @"https://maps.googleapis.com/maps/api/place/ph
     });
 }
 
++ (void)requestDetailsFor:(NSString*)placeID completion:(void (^)(NSDictionary* _Nullable details))completion {
+    NSMutableURLRequest* request = [self apiRequestWith:[NSString stringWithFormat:detailsURLFormat, placeID, apiKey]];
 
+    NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSString* requestReply = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+        NSData* responseData = [requestReply dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary* jsonDict = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
+
+        if (error != nil) {
+            completion(nil);
+        } else {
+            NSString* status = [jsonDict objectForKey:@"status"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([status isEqualToString:@"OK"]) {
+                    completion([jsonDict objectForKey:@"result"]);
+                } else {
+                    completion(nil);
+                }
+            });
+        }
+
+    }] resume];
+}
 
 @end

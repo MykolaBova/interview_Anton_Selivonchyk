@@ -17,6 +17,9 @@
 @property (weak, nonatomic) IBOutlet UILabel* locationLabel;
 @property (weak, nonatomic) IBOutlet UITextField* nameTextField;
 @property (weak, nonatomic) IBOutlet UILabel* typesLabel;
+@property (weak, nonatomic) IBOutlet UITextField* phoneTextField;
+@property (weak, nonatomic) IBOutlet UITextField* addressTextField;
+@property (weak, nonatomic) IBOutlet UITextField* ratingTextField;
 
 @property (strong, nonatomic) PFPlace* place;
 
@@ -41,10 +44,14 @@
         weakSelf.imageView.image = image;
     }];
 
-    self.idLabel.text = self.place.placeID;
-    self.nameTextField.text = self.place.name;
-    self.typesLabel.text = [self.place typesString];
-    self.locationLabel.text = [self.place locationString];
+    [self reloadTextValues];
+
+    if (self.place.wasEdited == NO) {
+        [PFNetworking requestDetailsFor:self.place.placeID completion:^(NSDictionary * _Nullable details) {
+            [weakSelf.place detailsFromDictionary:details];
+            [weakSelf reloadTextValues];
+        }];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -63,7 +70,14 @@
 
 - (void)save {
     NSString* name = self.nameTextField.text;
-    if (name == nil || [name isEqualToString:self.place.name]) { // just so the place always has a name
+
+    // just so the place always has a name
+    if (name == nil) {
+        return;
+    }
+
+    BOOL nothingToSave = [name isEqualToString:self.place.name] && [self.phoneTextField.text isEqualToString:self.place.phoneNumber] && [self.addressTextField.text isEqualToString:self.place.address] && [self.ratingTextField.text isEqualToString:self.place.rating];
+    if (nothingToSave == YES) {
         return;
     }
 
@@ -71,9 +85,23 @@
     [realm beginWriteTransaction];
 
     self.place.name = name;
+    self.place.phoneNumber = self.phoneTextField.text;
+    self.place.address = self.addressTextField.text;
+    self.place.rating = self.ratingTextField.text;
     self.place.wasEdited = YES;
 
     [realm commitWriteTransaction];
+}
+
+- (void)reloadTextValues {
+    self.idLabel.text = self.place.placeID;
+    self.nameTextField.text = self.place.name;
+    self.typesLabel.text = [self.place typesString];
+    self.locationLabel.text = [self.place locationString];
+
+    self.phoneTextField.text = self.place.phoneNumber;
+    self.addressTextField.text = self.place.address;
+    self.ratingTextField.text = self.place.rating;
 }
 
 @end
