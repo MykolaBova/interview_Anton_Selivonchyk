@@ -38,13 +38,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="334" height="34"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter city" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bIG-du-7FQ">
-                                                <rect key="frame" x="0.0" y="0.0" width="194" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="221" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lcO-qP-aP6">
-                                                <rect key="frame" x="214" y="0.0" width="120" height="34"/>
-                                                <state key="normal" title="Search for places"/>
+                                                <rect key="frame" x="241" y="0.0" width="93" height="34"/>
+                                                <state key="normal" title="Search in city"/>
                                                 <connections>
                                                     <action selector="searchTextAction:" destination="fWF-Rc-4Vx" eventType="touchUpInside" id="2GS-gs-Gkx"/>
                                                 </connections>
@@ -67,15 +67,31 @@
                                     </button>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AIT-DY-cqD">
+                                <rect key="frame" x="344" y="54" width="60" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="89U-W7-iTL"/>
+                                    <constraint firstAttribute="width" constant="60" id="mGf-UW-nbr"/>
+                                </constraints>
+                                <state key="normal" title="Dismiss"/>
+                                <connections>
+                                    <action selector="skipAction:" destination="fWF-Rc-4Vx" eventType="touchUpInside" id="gwj-Eb-qTq"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="qSC-K9-Tvq" firstAttribute="trailing" secondItem="AIT-DY-cqD" secondAttribute="trailing" constant="10" id="JKh-o9-tGR"/>
                             <constraint firstItem="Ebi-Rd-WUN" firstAttribute="centerY" secondItem="GOo-tU-mvU" secondAttribute="centerY" id="XmP-0c-5Cs"/>
                             <constraint firstItem="Ebi-Rd-WUN" firstAttribute="centerX" secondItem="GOo-tU-mvU" secondAttribute="centerX" id="ZcA-uS-gth"/>
                             <constraint firstItem="Ebi-Rd-WUN" firstAttribute="leading" secondItem="qSC-K9-Tvq" secondAttribute="leading" constant="40" id="fhb-RU-Bd7"/>
+                            <constraint firstItem="AIT-DY-cqD" firstAttribute="top" secondItem="qSC-K9-Tvq" secondAttribute="top" constant="10" id="iAh-ej-9p6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="qSC-K9-Tvq"/>
                     </view>
+                    <connections>
+                        <outlet property="cityTextField" destination="bIG-du-7FQ" id="JdM-U1-O0d"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="agc-jo-iGh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="TUe-D1-lXf" userLabel="Exit" sceneMemberID="exit"/>
@@ -121,6 +137,9 @@
                         <viewLayoutGuide key="safeArea" id="c4G-aq-gVx"/>
                     </view>
                     <navigationItem key="navigationItem" id="jYH-GO-p00"/>
+                    <connections>
+                        <outlet property="tableView" destination="2MX-1A-iRR" id="cSb-SM-5Ml"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DJo-5D-ygE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
