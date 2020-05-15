@@ -57,7 +57,12 @@
     NSArray<NSString*>* sortedTypes = [distinctTypes sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         return [obj1 length] > [obj2 length];
     }];
-    return [sortedTypes subarrayWithRange:NSMakeRange(0, 4)];
+
+    if ([sortedTypes count] > 0) {
+        return [sortedTypes subarrayWithRange:NSMakeRange(0, MIN(4, [sortedTypes count] - 1))];
+    } else {
+        return [NSArray array];
+    }
 }
 
 - (void)detailsFromDictionary:(NSDictionary*)result {
