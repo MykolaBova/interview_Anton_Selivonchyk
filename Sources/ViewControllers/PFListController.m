@@ -76,6 +76,20 @@ NSString* const kShowDetailSegueIdentifier = @"kShowDetailSegueIdentifier";
     return cell;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self.places[indexPath.row] deleteFromRealm];
+    }
+}
+
 #pragma mark - IBActions
 
 - (IBAction)applyFilterAction:(UISegmentedControl*)sender {
