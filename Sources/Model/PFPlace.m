@@ -65,6 +65,12 @@
     }
 }
 
+- (void)deleteFromRealm {
+    [self.realm transactionWithBlock:^{
+        [self.realm deleteObject:self];
+    }];
+}
+
 - (void)detailsFromDictionary:(NSDictionary*)result {
     [self.realm beginWriteTransaction];
 

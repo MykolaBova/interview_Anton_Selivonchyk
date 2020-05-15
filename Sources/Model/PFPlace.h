@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)loadFromDictionary:(NSDictionary*)result;
 + (NSArray<NSString*>*)filters;
 
+- (void)deleteFromRealm;
 - (void)detailsFromDictionary:(NSDictionary*)result;
 - (NSString*)typesString;
 - (NSString*)locationString;
